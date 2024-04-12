@@ -10,7 +10,7 @@ export default function MenuScreen() {
       {/* {products.map((product)=>{
         return <ProductListItem key={product.id} {...product}/>
       })} */}
-      {/* <Text style={styles.title}>Vijay's FoodMart</Text> */}
+      <Text style={styles.title}>Vijay's FoodMart</Text>
       <FlatList
       data={products}
       renderItem={({item})=> <ProductListItem {...item}/>}
