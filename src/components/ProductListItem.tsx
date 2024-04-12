@@ -1,7 +1,7 @@
 import { StyleSheet, Image,Pressable } from 'react-native'
 import Colors from '@/src/constants/Colors'
 import { Text, View } from '@/src/components/Themed'
-import { Link } from 'expo-router'
+import { Link, useSegments } from 'expo-router'
 interface ProductListProps {
   id: number
   name: string
@@ -13,11 +13,15 @@ export const defaultPizzaImage =
   'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/default.png'
 
 const ProductListItem = (props: ProductListProps) => {
+  const segments=useSegments()
+  if (!segments[0]) {
+    return null // Or some fallback UI
+  }
   const { id,name, image, price } = props
   return (
-    console.log(props),
+    // console.log(props),
     (
-      <Link href={`/menu/${id}`} asChild>
+      <Link href={`/${segments[0]}/menu/${id}`} asChild>
         <Pressable style={styles.container}>
           <Image
             source={{ uri: image || defaultPizzaImage }}
