@@ -1,4 +1,4 @@
-import { View, Text , StyleSheet, TextInput, TouchableWithoutFeedback, Keyboard, Image} from 'react-native'
+import { View, Text , StyleSheet, TextInput, TouchableWithoutFeedback, Keyboard, Image,Alert} from 'react-native'
 import React, { useState } from 'react'
 import Button from '@/src/components/Button'
 import { parse } from '@babel/core'
@@ -80,6 +80,21 @@ const createProductScreen = () => {
        }
      }
 
+     const onDelete=()=>{
+            console.warn('DELETE')
+     }
+
+     const confirmDelete = () => {
+        Alert.alert("Confirm Delete", "Are you sure you want to delete this product?",[{
+            text:'Cancel',
+        },{
+            text:'Delete',
+            style:'destructive',
+            onPress:onDelete
+        
+        }])
+     }
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}  
                                 accessible={false}>
@@ -101,6 +116,7 @@ const createProductScreen = () => {
 
         <Text style={{color:'red'}}>{error}</Text>
       <Button onPress={onSubmit} text={isUpdating?'Update':'Create'}/>
+      {isUpdating && <Text onPress={confirmDelete} style={styles.selectText}>Delete</Text>}
     </View>
       </TouchableWithoutFeedback>
   )
