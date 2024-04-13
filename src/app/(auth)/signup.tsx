@@ -9,11 +9,30 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
   Keyboard,
+  Alert,
 } from 'react-native'
+import { supabase } from '@/src/lib/supabase'
 
 const SignIn = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  async function signUpwihEmail(){
+    setLoading(true)
+    Alert.alert("Verification email sent. Please verify your email to continue.")
+    const {error}=await supabase.auth.signUp({
+      email,
+      password,
+  })
+  if(error){
+    Alert.alert(error.message)}
+    setLoading(false)
+}
+
+
+
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
@@ -34,7 +53,7 @@ const SignIn = () => {
           secureTextEntry
         />
 
-        <Button style={{ marginTop: 10 }} text="Create Account" />
+        <Button onPress={signUpwihEmail} disabled={loading} style={{ marginTop: 10 }} text={loading?"Creating Account...":"Create Account"} />
     <Link href='/signin'>
         <Text style={styles.button}>Sign In</Text>
     </Link>
