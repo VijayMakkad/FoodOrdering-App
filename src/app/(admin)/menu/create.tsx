@@ -1,11 +1,13 @@
 import { View, Text , StyleSheet, TextInput, TouchableWithoutFeedback, Keyboard, Image,Alert} from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Button from '@/src/components/Button'
 import { parse } from '@babel/core'
 import { defaultPizzaImage } from '@/src/components/ProductListItem'
 import Colors from '@/src/constants/Colors'
 import * as ImagePicker from 'expo-image-picker'
 import { Stack, useLocalSearchParams } from 'expo-router'
+import { useDeleteProduct, useInsertProduct, useProduct, useUpdateProduct } from '@/src/api/products'
+import { useRouter } from 'expo-router'
 
 const createProductScreen = () => {
     const [name,setName]=useState('')
@@ -13,8 +15,24 @@ const createProductScreen = () => {
     const [error,setError]=useState('')
     const [image,setImage]=useState<string|null>(null)
 
-    const {id}=useLocalSearchParams()
+    const router=useRouter()
+
+    const {id:idString}=useLocalSearchParams()
+    const id=parseFloat(typeof idString==='string'?idString:idString?.[0])
     const isUpdating=!!id
+
+    const {mutate:insertProduct}=useInsertProduct();
+    const {mutate:updateProduct}=useUpdateProduct();
+    const {data: updatingProduct}=useProduct(id)
+    const {mutate:deleteProduct}=useDeleteProduct()
+
+    useEffect(()=>{
+    if(updatingProduct){
+      setName(updatingProduct.name)
+      setPrice(updatingProduct.price.toString())
+      setImage(updatingProduct.image)
+    }
+    },[updatingProduct])
 
     const resetFeilds=()=>{
         setName('')
@@ -42,18 +60,29 @@ const createProductScreen = () => {
         if(!validateInput()){
             return;
         }
-      console.warn('Creating Product', name, price)
 
-      resetFeilds()
+        insertProduct({name,price:parseFloat(price),image},{
+          onSuccess:()=>{
+            resetFeilds()
+            Alert.alert('Product Created', `Name: ${name}, Price: ${price}`)
+            router.back();
+
+          }
+        })
     }
 
      const onUpdate = () => {
        if (!validateInput()) {
          return
        }
-       console.warn('Updating Product', name, price)
 
-       resetFeilds()
+       updateProduct({id,name,price:parseFloat(price),image},{
+        onSuccess:()=>{
+          resetFeilds()
+          Alert.alert('Product Updated', `Name: ${name}, Price: ${price}`)
+          router.back();
+        }
+       })
      }
 
     const onSubmit=()=>{
@@ -81,7 +110,13 @@ const createProductScreen = () => {
      }
 
      const onDelete=()=>{
-            console.warn('DELETE')
+            // console.warn('DELETE')
+            deleteProduct({id},{
+              onSuccess:()=>{
+                Alert.alert('Product Deleted')
+                router.replace('/(admin)')
+              }
+            })
      }
 
      const confirmDelete = () => {
