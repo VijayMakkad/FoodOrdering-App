@@ -1,20 +1,31 @@
 import { View, Text, StyleSheet, FlatList, Pressable } from 'react-native'
 import { Stack, useLocalSearchParams } from 'expo-router'
-import orders from '../../../../assets/data/orders'
 import OrderItemListItem from '../../../components/OrderItemListItem'
 import OrderListItem from '../../../components/OrderListItem'
 import Colors from '@/src/constants/Colors'
 import { OrderStatusList } from '@/src/types'
+import { ActivityIndicator } from 'react-native'
+import { useOrderDetails, useUpdateOrder } from '@/src/api/orders'
 
 const OrderDetailScreen = () => {
-  const { id } = useLocalSearchParams()
+  
+  const { id: idString } = useLocalSearchParams()
+  const id = parseFloat(typeof idString === 'string' ? idString : idString[0])
 
-  const order = orders.find((o) => o.id.toString() === id)
+  const { data: order, isLoading, error } = useOrderDetails(id)
 
-  if (!order) {
-    return <Text>Order not found!</Text>
+  const updateStatus=(status:string)=>{
+    updateOrder({id:id,updatedField:{status}})
   }
-
+  const {mutate:updateOrder}=useUpdateOrder()
+  // const order = orders.find((o) => o.id.toString() === id)
+  if (error || !order) {
+    return <Text>Failed to Fetch Order</Text>
+  }
+  if (isLoading) {
+    return <ActivityIndicator />
+  }
+  console.log(order)
   return (
     <View style={styles.container}>
       <Stack.Screen options={{ title: `Order #${order.id}` }} />
@@ -22,7 +33,7 @@ const OrderDetailScreen = () => {
       <OrderListItem order={order} />
 
       <FlatList
-        data={order.order_items}
+        data={order.orders_item}
         renderItem={({ item }) => <OrderItemListItem item={item} />}
         contentContainerStyle={{ gap: 10 }}
         ListFooterComponent={() => (
@@ -32,7 +43,7 @@ const OrderDetailScreen = () => {
               {OrderStatusList.map((status) => (
                 <Pressable
                   key={status}
-                  onPress={() => console.warn('Update status')}
+                  onPress={() => updateStatus(status)}
                   style={{
                     borderColor: Colors.light.tint,
                     borderWidth: 1,

@@ -40,7 +40,8 @@
     "react-native-screens": "~3.29.0",
     "react-native-tab-view": "^3.5.2",
     "react-native-url-polyfill": "^2.0.0",
-    "react-native-web": "~0.19.6"
+    "react-native-web": "~0.19.6",
+    "supabase": "^1.159.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

@@ -4,7 +4,7 @@ import { defaultPizzaImage } from '@/src/components/ProductListItem'
 import { useState } from 'react'
 import Button from '@/src/components/Button'
 import { PizzaSize } from '@/src/types'
-import { useCart } from '../../cart'
+import { useCart } from '@/src/providers/CartProvider'
 import { useProduct } from '@/src/api/products'
 const sizes:PizzaSize[] = ['S', 'M', 'L']
 
