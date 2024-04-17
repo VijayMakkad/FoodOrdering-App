@@ -19,13 +19,13 @@ const OrderDetailScreen = () => {
   }
   const {mutate:updateOrder}=useUpdateOrder()
   // const order = orders.find((o) => o.id.toString() === id)
-  if (error || !order) {
-    return <Text>Failed to Fetch Order</Text>
-  }
   if (isLoading) {
     return <ActivityIndicator />
   }
-  console.log(order)
+  if (error || !order) {
+    return <Text>Failed to Fetch Order</Text>
+  }
+  
   return (
     <View style={styles.container}>
       <Stack.Screen options={{ title: `Order #${order.id}` }} />
