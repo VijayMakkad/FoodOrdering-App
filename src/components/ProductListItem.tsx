@@ -1,8 +1,9 @@
-import { StyleSheet, Image,Pressable } from 'react-native'
+import { StyleSheet,Pressable } from 'react-native'
 import Colors from '@/src/constants/Colors'
 import { Text, View } from '@/src/components/Themed'
 import { Link, useSegments } from 'expo-router'
 import { Tables } from '../types'
+import RemoteImage from './RemoteImage'
 type ProductListProps ={
  product:Tables<'products'>
 }
@@ -21,8 +22,9 @@ const ProductListItem = ({product}: ProductListProps) => {
     (
       <Link href={`/${segments[0]}/menu/${product.id }`} asChild>
         <Pressable style={styles.container}>
-          <Image
-            source={{ uri: product.image || defaultPizzaImage }}
+          <RemoteImage
+            path={product.image}
+            fallback={defaultPizzaImage}
             style={styles.image}
           />
           <Text style={styles.title}>{product.name}</Text>
@@ -31,7 +33,7 @@ const ProductListItem = ({product}: ProductListProps) => {
       </Link>
     )
   )
-}
+} 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
