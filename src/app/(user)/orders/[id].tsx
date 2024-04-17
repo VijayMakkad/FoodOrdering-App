@@ -1,8 +1,9 @@
 import { View, Text, StyleSheet, FlatList, ActivityIndicator } from 'react-native'
 import { Stack, useLocalSearchParams } from 'expo-router'
-import OrderItemListItem from '../../../components/OrderItemListItem'
+import OrderItemListItem from '@/src/components/OrderItemListItem'
 import OrderListItem from '../../../components/OrderListItem'
 import { useOrderDetails } from '@/src/api/orders'
+import { useUpdateOrderSubscription } from '@/src/api/orders/subscription'
 
 const OrderDetailScreen = () => {
 
@@ -10,6 +11,7 @@ const OrderDetailScreen = () => {
   const id = parseFloat(typeof idString === 'string' ? idString : idString[0])
 
   const {data:order,isLoading,error}=useOrderDetails(id)
+  useUpdateOrderSubscription (id)
 
   // const order = orders.find((o) => o.id.toString() === id)
   if (error || !order) {
