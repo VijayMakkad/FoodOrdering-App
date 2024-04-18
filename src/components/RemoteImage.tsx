@@ -1,7 +1,7 @@
 import { Image } from 'react-native'
 import React, { ComponentProps, useEffect, useMemo, useState } from 'react'
 import { supabase } from '../lib/supabase'
-
+import LazyBackgroundImage from './LazyBackgroundImage'
 type RemoteImageProps = {
   path?: string | null
   fallback: string
@@ -35,7 +35,9 @@ const RemoteImage = ({ path, fallback, ...imageProps }: RemoteImageProps) => {
   if (!image) {
   }
 
-  return <Image source={{ uri: image || fallback }} {...imageProps} />
+  return (
+  <Image source={{ uri: image || fallback }} {...imageProps} />
+)
 }
 
 export default RemoteImage
