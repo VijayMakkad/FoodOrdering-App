@@ -7,8 +7,6 @@ import ProfileComponent from '@/src/components/ProfileComponent'
 
 
 const ProfileScreen = () => {
-  const { id: idString } = useLocalSearchParams()
-  const id = parseFloat(typeof idString === 'string' ? idString : idString[0])
   return (
     <View
       style={{
@@ -29,7 +27,7 @@ const ProfileScreen = () => {
       >
         Ola Amigo!
       </Text>
-      <ProfileComponent id={id}/>
+      {/* <ProfileComponent id={id}/> */}
       <Button
         text="Update Profile"
         onPress={() => console.warn('PLEASE HELP')}
