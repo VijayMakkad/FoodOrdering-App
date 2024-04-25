@@ -1,4 +1,4 @@
-# Food Ordering App
+![image](https://github.com/VijayMakkad/FoodOrdering-App/assets/113830893/5da7b245-298d-49ca-8a36-c84dddb48c20)# Food Ordering App
 
 Welcome to the Food Ordering App! This is a full-stack project developed using React Native with TypeScript for the frontend, Supabase for the backend, and Expo for the development environment. This document will guide you through the setup and usage of the app.
 
@@ -51,7 +51,7 @@ SUPABASE_KEY=your_supabase_public_api_key
 ### 4. Start the Development Server
 
 ```bash
-expo start
+npx expo start
 ```
 
 This will start the Expo development server. You can run the app on an iOS or Android simulator/emulator or on your physical device using the Expo Go app.
